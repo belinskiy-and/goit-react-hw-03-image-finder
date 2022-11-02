@@ -21,4 +21,10 @@ export const GlobalStyle = createGlobalStyle`
         max-width: 100%;
         height: auto;
     }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
 `;
