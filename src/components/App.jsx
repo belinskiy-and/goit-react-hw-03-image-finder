@@ -61,7 +61,7 @@ export class App extends Component {
 
       this.setState({
         items: [...this.state.items, ...mapper(responce)],
-        status: Status.RESOLVED
+        status: Status.RESOLVED,
       });
     }
     catch(error) {
@@ -83,17 +83,20 @@ export class App extends Component {
   };
   
   render() {
+    const { status, items, fullScreenImage, page } = this.state;
+
+    const totalPages = Math.ceil((items.length + 1) / 12);
 
     return (
       <>
         <Searchbar onSearch={this.handleSearch} />
       
-        {this.state.status === Status.IDLE && <IdleCaption caption="Enter search value" />}
-        {this.state.status === Status.PENDING && <Loader />}
-        {this.state.status === Status.RESOLVED && <ImageGallery items={this.state.items} onClick={this.handleOpenModal} />}
-        {this.state.status === Status.RESOLVED && <Button caption="Load more" handleClick={this.handleLoadMore} />}
-        {this.state.status === Status.REJECTED && <Error caption="Error. Please try again." />}
-        {this.state.fullScreenImage && <Modal onClose={this.handleCloseModal} imageURL={this.state.fullScreenImage} />}
+        {status === Status.IDLE && <IdleCaption caption="Enter search value" />}
+        {status === Status.PENDING && <Loader />}
+        {status === Status.RESOLVED && <ImageGallery items={items} onClick={this.handleOpenModal} />}
+        {status === Status.RESOLVED && page < totalPages && <Button caption="Load more" handleClick={this.handleLoadMore} />}
+        {status === Status.REJECTED && <Error caption="Error. Please try again." />}
+        {fullScreenImage && <Modal onClose={this.handleCloseModal} imageURL={fullScreenImage} />}
         <GlobalStyle />
         <ToastContainer />
       </>
